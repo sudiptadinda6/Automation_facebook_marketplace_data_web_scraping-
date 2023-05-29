@@ -1,0 +1,10 @@
+node_modules/
+lib/
+location.js
+index.js
+youtube.js
+performanece.js
+imagesdata.js
+app.js
+amazon.js
+cookies.js
