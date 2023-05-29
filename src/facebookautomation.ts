@@ -14,9 +14,9 @@ async function browserWork(): Promise<void> {
 
         await page.waitForSelector('#email')
 
-        await page.type('#email', "petofem399@lieboe.com")
+        await page.type('#email', "#########@lieboe.com")
 
-        await page.type('#pass', 'Diganta12@')
+        await page.type('#pass', '#####12@')
 
         await page.click(`[type="submit"]`)
 
