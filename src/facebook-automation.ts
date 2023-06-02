@@ -59,9 +59,9 @@ async function facebook_data_wcriping() {
 
     await page.waitForSelector(facebookSelecter.facebookEmailSeleter)
 
-    await page.type(facebookSelecter.facebookEmailSeleter, "petofem399@lieboe.com")
+    await page.type(facebookSelecter.facebookEmailSeleter, "##@#$%^^^.com")
 
-    await page.type(facebookSelecter.facebookPasswordSeleter,"Diganta12@")
+    await page.type(facebookSelecter.facebookPasswordSeleter,"D@#$55512@")
 
     await page.click(facebookSelecter.facebookSubmitButtonSeleter)
 
