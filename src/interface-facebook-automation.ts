@@ -1,9 +1,7 @@
- interface productDetalies{
+export interface productDetalies{
     productDescription: string,
-    productPrice: any,
+    productPrice: string,
     address: string,
     productProfileLink: string,
     productSellerName: string
 }
-
-export{productDetalies}

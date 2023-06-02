@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 
 import {productDetalies} from "./interface-facebook-automation"
 
-import {FACEBOOK_URL,FACEBOOK_MARKET_PLACE_URL,fiveSec,ThreeSec} from "./constants"
+import {FACEBOOK_URL,FACEBOOK_MARKET_PLACE_URL,oneSecend, marketSearchItem} from "./constants"
 
 import { facebookSelecter } from "./facebook-selecter";
 
@@ -25,57 +25,22 @@ async function facebook_market_data(browser: any, link: any):Promise<productDeta
 
     await newPage.goto(link)
 
-    await newPage.waitForSelector(facebookSelecter.selecterProductDetailes)
+    const productDetailes =await selecterWorkText(newPage,facebookSelecter.selecterProductDetailes)
 
-    const data_product_name_detailes = await newPage.evaluate((sel: any) => {
-        const elements = document.querySelectorAll(sel);
-        return Array.from(elements, (el: any) => el.innerText);
-    }, facebookSelecter.selecterProductDetailes);
+    const product_Price = await selecterWorkText(newPage,facebookSelecter.selecterProductPrice)
 
-    const newdata_product_name_detailes = data_product_name_detailes.toString()
+    const productSellerAddress = await selecterWorkText(newPage,facebookSelecter.selecterProductAddress)
 
-    await newPage.waitForSelector(facebookSelecter.selecterProductPrice)
+    const productSellerProfilelink = await selecterWorkHrefLink(newPage,facebookSelecter.selecterProductProfileLink)
 
-    const product_Price = await newPage.evaluate((sel: any) => {
-        const elements = document.querySelectorAll(sel);
-        return Array.from(elements, (el: any) => el.innerText);
-    }, facebookSelecter.selecterProductPrice);
-
-    const newproduct_Price = product_Price.toString()
-
-    await newPage.waitForSelector(facebookSelecter.selecterProductAddress)
-
-    const productSellerAddress = await newPage.evaluate((sel: any) => {
-        const elements = document.querySelectorAll(sel);
-        return Array.from(elements, (el: any) => el.innerText);
-    }, facebookSelecter.selecterProductAddress);
-
-    const newproductSellerAddress = productSellerAddress.toString()
-
-    await newPage.waitForSelector(facebookSelecter.selecterProductProfileLink)
-
-    const productSellerProfilelink = await newPage.evaluate((sel: any) => {
-        const elements = document.querySelectorAll(sel);
-        return Array.from(elements, (el: any) => el.href);
-    },facebookSelecter.selecterProductProfileLink);
-
-    const newproductSellerProfilelink = productSellerProfilelink.toString()
-
-    await newPage.waitForSelector(facebookSelecter.selecterProductSellerName)
-
-    const productSellerName = await newPage.evaluate((sel: any) => {
-        const elements = document.querySelectorAll(sel);
-        return Array.from(elements, (el: any) => el.innerText);
-    },facebookSelecter.selecterProductSellerName);
-
-    const newproductSellerName = productSellerName.toString()
+    const productSellerName = await selecterWorkText(newPage,facebookSelecter.selecterProductSellerName)
 
     const productDetalies = {
-        productDescription: newdata_product_name_detailes,
-        productPrice: newproduct_Price,
-        address: newproductSellerAddress,
-        productProfileLink: newproductSellerProfilelink,
-        productSellerName: newproductSellerName
+        productDescription: productDetailes,
+        productPrice: product_Price,
+        address: productSellerAddress,
+        productProfileLink: productSellerProfilelink,
+        productSellerName: productSellerName
     }
 
     newPage.close()
@@ -94,27 +59,27 @@ async function facebook_data_wcriping() {
 
     await page.waitForSelector(facebookSelecter.facebookEmailSeleter)
 
-    await page.type(facebookSelecter.facebookEmailSeleter, "$%$##$$$$@lieboe.com")
+    await page.type(facebookSelecter.facebookEmailSeleter, "@@@@@@@oe.com")
 
-    await page.type(facebookSelecter.facebookPasswordSeleter,"#####12@")
+    await page.type(facebookSelecter.facebookPasswordSeleter,"D#$#$$$a12@")
 
     await page.click(facebookSelecter.facebookSubmitButtonSeleter)
 
     await page.waitForNavigation()
 
-    await page.waitForTimeout(ThreeSec)
+    await page.waitForTimeout(oneSecend*3)
 
     await page.goto(FACEBOOK_MARKET_PLACE_URL)
 
-    await page.waitForTimeout(fiveSec)
+    await page.waitForTimeout(oneSecend*5)
 
     await page.waitForSelector(facebookSelecter.facebookMarketPlaceInbox)
 
-    await page.type(facebookSelecter.facebookMarketPlaceInbox, "ktm")
+    await page.type(facebookSelecter.facebookMarketPlaceInbox, marketSearchItem)
 
     await page.keyboard.press('Enter');
 
-    await page.waitForTimeout(fiveSec)
+    await page.waitForTimeout(oneSecend*5)
 
     const productLinks = await page.evaluate((sel) => {
         const elements = document.querySelectorAll(sel);
@@ -134,4 +99,33 @@ async function facebook_data_wcriping() {
     console.log(productArray)
 
     browser.close()
+}
+
+
+async function selecterWorkText(newPage :any,selecterinformation:any):Promise<string>{
+
+    await newPage.waitForSelector(selecterinformation)
+
+    const data= await newPage.evaluate((sel: any) => {
+        const elements = document.querySelectorAll(sel);
+        return Array.from(elements, (el: any) => el.innerText);
+    }, selecterinformation);
+    
+    const newData =data.toString()
+    
+    return newData
+}
+
+async function selecterWorkHrefLink(newPage :any,selecterinformation:any):Promise<string>{
+
+    await newPage.waitForSelector(selecterinformation)
+
+    const data= await newPage.evaluate((sel: any) => {
+        const elements = document.querySelectorAll(sel);
+        return Array.from(elements, (el: any) => el.href);
+    }, selecterinformation);
+    
+    const newData =data.toString()
+    
+    return newData
 }
