@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 
 import {productDetalies} from "./interface-facebook-automation"
 
-import {FACEBOOK_URL,FACEBOOK_MARKET_PLACE_URL,oneSecend, marketSearchItem} from "./constants"
+import {FACEBOOK_URL,FACEBOOK_MARKET_PLACE_URL,oneSecend, marketSearchItem, mousesrollingResolution} from "./constants"
 
 import { facebookSelecter } from "./facebook-selecter";
 
@@ -59,9 +59,9 @@ async function facebook_data_wcriping() {
 
     await page.waitForSelector(facebookSelecter.facebookEmailSeleter)
 
-    await page.type(facebookSelecter.facebookEmailSeleter, "@@@@@@@oe.com")
+    await page.type(facebookSelecter.facebookEmailSeleter, "petofem399@lieboe.com")
 
-    await page.type(facebookSelecter.facebookPasswordSeleter,"D#$#$$$a12@")
+    await page.type(facebookSelecter.facebookPasswordSeleter,"Diganta12@")
 
     await page.click(facebookSelecter.facebookSubmitButtonSeleter)
 
@@ -81,11 +81,14 @@ async function facebook_data_wcriping() {
 
     await page.waitForTimeout(oneSecend*5)
 
+    await autoScroll(page,mousesrollingResolution)
+
+    await page.waitForTimeout(oneSecend*10)
+
     const productLinks = await page.evaluate((sel) => {
         const elements = document.querySelectorAll(sel);
         return Array.from(elements, (el: any) => el.href);
     }, facebookSelecter.facebookProductLinkSEleter);
-
 
     const productArray = []
 
@@ -128,4 +131,23 @@ async function selecterWorkHrefLink(newPage :any,selecterinformation:any):Promis
     const newData =data.toString()
     
     return newData
+}
+
+async function autoScroll(page:any,yAxiesValue:number):Promise<void>{
+    await page.evaluate(async (newValue:number) => {
+        await new Promise<void>((resolve) => {
+            var totalHeight = 0;
+            var distance = 100;
+            var timer = setInterval(() => {
+                var scrollHeight = document.body.scrollHeight;
+                window.scrollBy(0, distance);
+                totalHeight += distance;
+
+                if((newValue && totalHeight>=newValue)||(totalHeight >=scrollHeight -window.innerHeight)){
+                    clearInterval(timer);
+                    resolve();
+                }
+            }, 100);
+        });
+    },yAxiesValue);
 }

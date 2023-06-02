@@ -5,3 +5,5 @@ export const FACEBOOK_MARKET_PLACE_URL ='https://www.facebook.com/marketplace/?r
 export const oneSecend =1000
 
 export const marketSearchItem ='ktm'
+
+export const  mousesrollingResolution =10000
